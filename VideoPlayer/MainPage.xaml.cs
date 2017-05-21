@@ -36,6 +36,7 @@ namespace VideoPlayer
         }
 
         int pages = 1;
+        int j = 0;   //下载的视频数量
         bool isAtTop = false;
         bool isAtButtom = false;
         //判断滚动条是否在最底部
@@ -154,9 +155,9 @@ namespace VideoPlayer
                 string n = time + ".mp4";
                 Frame root = Window.Current.Content as Frame;
                 root.Navigate(typeof(pages.DownLoad), n);
-
-                await Load(strURL, time);
-
+                
+                await Load(strURL, j.ToString());
+                j++;
                 ContentDialog errorDialog = new ContentDialog()
                 {
                     Title = "下载",
@@ -179,7 +180,7 @@ namespace VideoPlayer
         }
 
         //下载视频到本地
-        public async Task<StorageFile> Load(string url, string time)
+        public async Task<StorageFile> Load(string url, string path)
         {
             try
             {
@@ -187,7 +188,7 @@ namespace VideoPlayer
                 var buffer = await httpClient.GetBufferAsync(new Uri(url));
                 if (buffer != null && buffer.Length > 0u)
                 {
-                    var file = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync(@"视频\test.mp4", CreationCollisionOption.ReplaceExisting);
+                    var file = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync(j+".mp4", CreationCollisionOption.ReplaceExisting);
                     using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                     {
                         await stream.WriteAsync(buffer);

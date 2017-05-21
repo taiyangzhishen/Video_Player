@@ -30,6 +30,7 @@ namespace VideoPlayer.pages
             this.InitializeComponent();
         }
 
+        //返回到主页面
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             Frame root = Window.Current.Content as Frame;
