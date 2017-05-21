@@ -5,9 +5,75 @@
     xmlns:local="using:VideoPlayer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:videoViewModel="using:VideoPlayer.ViewModel"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <videoViewModel:VideoViewModel></videoViewModel:VideoViewModel>
+    </Page.DataContext>
 
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!--顶部图片-->
+        <Grid Grid.Row="0" Background="#FE007F">
+            <TextBlock Margin="10" Text="百思不得姐" FontSize="30" Foreground="White"></TextBlock>
+            <Button VerticalAlignment="Stretch" HorizontalAlignment="Right" FontFamily="Segoe UI Emoji" Content="&#x21BA;" Margin="0,0,10,0" FontSize="30" Background="#FE007F" Click="History_Click"></Button>
+            <Button VerticalAlignment="Stretch" HorizontalAlignment="Right" FontFamily="Segoe UI Emoji" Content="&#x21E9;" Margin="0,0,60,0" FontSize="30" Background="#FE007F" Click="Down_Click"></Button>
+            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="White" StrokeThickness="10"></Rectangle>
+        </Grid>
+        <!--列表-->
+        <Grid Grid.Row="1">
+            <ProgressRing x:Name="progressring" IsActive="True" Visibility="Collapsed" VerticalAlignment="Top" Foreground="#FE007F"></ProgressRing>
+            <ScrollViewer x:Name="scrollviewer" ViewChanged="scrollviewer_ViewChanged">
+                <ListView x:Name="listview" ItemsSource="{Binding Contentlist}" Margin="20">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <!--头像名字和时间-->
+                                <Grid Grid.Row="0">
+                                    <RelativePanel>
+                                        <Ellipse x:Name="userImage" Height="50" Width="50" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource="{Binding profile_image}"></ImageBrush>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock x:Name="userName" Text="{Binding name}" FontSize="20" RelativePanel.RightOf="userImage" RelativePanel.AlignVerticalCenterWith="userImage"></TextBlock>
+                                        <TextBlock x:Name="time" Text="{Binding create_time}" FontSize="15" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True"></TextBlock>
+                                        <TextBlock x:Name="text" Text="{Binding text}" FontSize="15" RelativePanel.Below="userImage" TextWrapping="Wrap"></TextBlock>
+                                    </RelativePanel>
+                                </Grid>
+                                <!--视频-->
+                                <Grid Grid.Row="1">
+                                    <MediaElement x:Name="player" Source="{Binding video_uri}" PosterSource="Assets/default.png" AreTransportControlsEnabled="True" AutoPlay="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <MediaElement.TransportControls>
+                                            <MediaTransportControls IsCompact="True"></MediaTransportControls>
+                                        </MediaElement.TransportControls>
+                                    </MediaElement>
+                                </Grid>
+                                <!--点赞喜欢数量和下载-->
+                                <Grid Grid.Row="2">
+                                    <CommandBar VerticalAlignment="Bottom" Background="#FE007F">
+                                        <AppBarButton x:Name="like" Icon="Like"></AppBarButton>
+                                        <AppBarSeparator/>
+                                        <AppBarButton x:Name="hate" Icon="Dislike"></AppBarButton>
+                                        <AppBarSeparator/>
+                                        <AppBarButton x:Name="down" Icon="Download" Click="down_Click"></AppBarButton>
+                                    </CommandBar>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+            <ProgressBar x:Name="progressbar" Visibility="Collapsed" IsIndeterminate="True" VerticalAlignment="Center" Foreground="#FE007F"></ProgressBar>
+        </Grid>
     </Grid>
 </Page>
