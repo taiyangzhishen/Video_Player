@@ -146,14 +146,14 @@ namespace VideoPlayer
                 string time = videoViewModel.Contentlist[i].create_time;
                 ContentDialog dDialog = new ContentDialog()
                 {
-                    Title = "下载"+i,
+                    Title = "下载",
                     Content = strURL + "开始下载了",
                     PrimaryButtonText = "确定"
                 };
                 ContentDialogResult dresult = await dDialog.ShowAsync();
-               // string n = time + ".mp4";
-               // Frame root = Window.Current.Content as Frame;
-               // root.Navigate(typeof(pages.DownLoad), n);
+                string n = time + ".mp4";
+                Frame root = Window.Current.Content as Frame;
+                root.Navigate(typeof(pages.DownLoad), n);
 
                 await Load(strURL, time);
 
@@ -187,7 +187,7 @@ namespace VideoPlayer
                 var buffer = await httpClient.GetBufferAsync(new Uri(url));
                 if (buffer != null && buffer.Length > 0u)
                 {
-                    var file = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync(time+".mp4", CreationCollisionOption.ReplaceExisting);
+                    var file = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync(@"视频\test.mp4", CreationCollisionOption.ReplaceExisting);
                     using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                     {
                         await stream.WriteAsync(buffer);
